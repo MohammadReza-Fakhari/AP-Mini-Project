@@ -32,11 +32,7 @@ background_picture=pygame.image.load("background_picture.jpg")
 background_picture= pygame.transform.scale(background_picture, (800,500))
 target_image=pygame.image.load("target.png")
 target_image = pygame.transform.scale(target_image, (50, 50))
-
-players_shots=[]
-player1_shot=[]
-player2_shot=[]                                                                                              
-targets=[]
+                                                                                            
 
 screen= pygame.display.set_mode((800,500))
 
@@ -71,10 +67,37 @@ class Game:
                     pos=pygame.mouse.get_pos()
                     self.state=button.update(screen,pos,self.state,self.click)
             elif self.state==2:
+                while True:
+                    screen.fill(BROWN)
+                    timer_text1=self.font.render(f"Player 1    time:{player[0].time}  Bullets:{player[0].bullet}  score:{player[0].score}",True,WHITE)
+                    screen.blit(timer_text1,(20,20))
+                    timer_text2=self.font.render(f"Player 2    time:{player[1].time}  Bullets:{player[1].bullet}   score:{player[1].score}",True,WHITE)
+                    screen.blit(timer_text2,(20,50))
+    
+                    pygame.display.update()
                     for event in pygame.event.get():
                         if event.type == KEYDOWN:
+                            gun1_player=player[0]
+                            gun2_player=player[1]
                             if event.key == K_ESCAPE:
-                                self.running = False
+                                self.running = False                             
+                            elif event.key== K_w:
+                                gun1_player.position=(gun1_player.position[0],gun1_player.position[1]-10)
+                            elif event.key== K_d:
+                                gun1_player.position=(gun1_player.position[0]+10,gun1_player.position[1])
+                            elif event.key == K_a:
+                                gun1_player.position=(gun1_player.position[0]-10,gun1_player.position[1])
+                            elif event.key== K_s:
+                                gun1_player.position=(gun1_player.position[0],gun1_player.position[1]+10)
+                            #Second palyer commands
+                            elif event.key== K_i:
+                                gun2_player.position=(gun2_player.position[0],gun2_player.position[1]-10)
+                            elif event.key== K_l:
+                                gun2_player.position=(gun2_player.position[0]+10,gun2_player.position[1])
+                            elif event.key == K_j:
+                                gun2_player.position=(gun2_player.position[0]-10,gun2_player.position[1])
+                            elif event.key== K_k:
+                                gun2_player.position=(gun2_player.position[0],gun2_player.position[1]+10)
                         if event.type == QUIT:
                             self.running=False
                             pygame.quit()
@@ -83,6 +106,23 @@ class Game:
                 pygame.quit()
                 sys.exit()
             pygame.display.update()
+class Player():
+    def __init__(self,kind,position,bullet=10,death=False,score=0,time=120):
+        self.kind=kind
+        self.death=death
+        self.time=time
+        self.position=position
+        self.score=score
+        self.bullet=bullet
+        self.start_time=0
+    def death_check(self):
+        timer=(pygame.time.get_ticks()-self.start_time)//1000 
+        self.time=max(120-timer,0)
+        if self.time==0:
+            self.death=True
+player=[Player(gun1_image,(random.randint(50,WIDTH-50),random.randint(50,HEIGHT-50))),
+        Player(gun2_image,(random.randint(50,WIDTH-50),random.randint(50,HEIGHT-50)))]
+
 class Button:
     def __init__(self,text,location,size,text_color,background_color,face_color,ch_state):
         self.text=text
