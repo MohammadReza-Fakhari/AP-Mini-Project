@@ -32,7 +32,11 @@ background_picture=pygame.image.load("background_picture.jpg")
 background_picture= pygame.transform.scale(background_picture, (800,500))
 target_image=pygame.image.load("target.png")
 target_image = pygame.transform.scale(target_image, (50, 50))
-                                                                                            
+
+players_shots=[]
+player1_shot=[]
+player2_shot=[]                                                                                              
+targets=[]
 
 screen= pygame.display.set_mode((800,500))
 
@@ -73,14 +77,28 @@ class Game:
                     screen.blit(timer_text1,(20,20))
                     timer_text2=self.font.render(f"Player 2    time:{player[1].time}  Bullets:{player[1].bullet}   score:{player[1].score}",True,WHITE)
                     screen.blit(timer_text2,(20,50))
-    
+                    current_time = pygame.time.get_ticks()
+                    for shots in players_shots:
+                        shots.visability()
                     pygame.display.update()
                     for event in pygame.event.get():
                         if event.type == KEYDOWN:
                             gun1_player=player[0]
                             gun2_player=player[1]
                             if event.key == K_ESCAPE:
-                                self.running = False                             
+                                self.running = False
+                            if event.key==pygame.K_RETURN:
+                                if gun1_player.bullet>0:
+                                    gun1_player.bullet-=1
+                                    player_has_shotted=Shot(gun1_player.score,gun1_player.kind,gun1_player.position[0],gun1_player.position[1],gun1_player.bullet,show=True)
+                                    players_shots.append(player_has_shotted)
+                                    player1_shot.append((gun1_player.position[0],gun1_player.position[1]))
+                            if event.key==pygame.K_SPACE:
+                                if gun2_player.bullet>0:
+                                    gun2_player.bullet-=1
+                                    player_has_shotted=Shot(gun2_player.score,gun2_player.kind,gun2_player.position[0],gun2_player.position[1],gun2_player.bullet,show=True)
+                                    players_shots.append(player_has_shotted)
+                                    player2_shot.append((gun2_player.position[0],gun2_player.position[1]))                                
                             elif event.key== K_w:
                                 gun1_player.position=(gun1_player.position[0],gun1_player.position[1]-10)
                             elif event.key== K_d:
@@ -122,6 +140,16 @@ class Player():
             self.death=True
 player=[Player(gun1_image,(random.randint(50,WIDTH-50),random.randint(50,HEIGHT-50))),
         Player(gun2_image,(random.randint(50,WIDTH-50),random.randint(50,HEIGHT-50)))]
+class Shot(Player):
+    def __init__(self,score,kind,x,y,bullet,show=False):
+            super().__init__(score,kind,(x,y),bullet)
+            self.x=x
+            self.y=y
+            self.score=score
+            self.show=show
+            self.kind=kind
+    def visability(self):
+        screen.blit(self.kind, (self.x, self.y))
 
 class Button:
     def __init__(self,text,location,size,text_color,background_color,face_color,ch_state):
