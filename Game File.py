@@ -134,12 +134,12 @@ class RegisterScreen:
         while self.running:
             screen.fill(WHITE)
             title = small_font.render("REGISTER", True, BLACK)
-            screen.blit(title, (WIDTH//2 - title.get_width()//2, 50))
+            screen.blit(title, (WIDTH//2 - title.get_width()//2, 20))
             
             fields = [
-                ("Username:", self.username, 150),
-                ("Password:", "*" * len(self.password), 200),
-                ("Confirm Password:", "*" * len(self.confirm), 250)
+                ("Username:", self.username, 70),
+                ("Password:", "*" * len(self.password), 150),
+                ("Confirm Password:", "*" * len(self.confirm), 230)
             ]
             for i, (label, value, y) in enumerate(fields):
                 label_surf = small_font.render(label, True, BLACK)
@@ -147,7 +147,7 @@ class RegisterScreen:
                 color = BLUE if self.active_field == i else BROWN
                 pygame.draw.rect(screen, color, (WIDTH//2 - 150, y, 300, 35), 2)
                 text_surf = font.render(value, True, BLACK)
-                screen.blit(text_surf, (WIDTH//2 - 140, y + 5))
+                screen.blit(text_surf, (WIDTH//2 - 140, y + 10))
             
             pos = pygame.mouse.get_pos()
             state = None
@@ -156,7 +156,7 @@ class RegisterScreen:
             
             if self.message:
                 message_surf = small_font.render(self.message, True, self.message_color)
-                screen.blit(message_surf, (WIDTH//2 - message_surf.get_width()//2, 440))
+                screen.blit(message_surf, (WIDTH//2 - message_surf.get_width()//2, 370))
             
             pygame.display.flip()
             
@@ -188,11 +188,11 @@ class RegisterScreen:
                     if self.back_button.rect1.collidepoint(event.pos):
                         return False
                     if WIDTH//2 - 150 <= event.pos[0] <= WIDTH//2 + 150:
-                        if 150 <= event.pos[1] <= 185:
+                        if 70 <= event.pos[1] <= 105:
                             self.active_field = 0
-                        elif 200 <= event.pos[1] <= 235:
+                        elif 150 <= event.pos[1] <= 185:
                             self.active_field = 1
-                        elif 250 <= event.pos[1] <= 285:
+                        elif 230 <= event.pos[1] <= 265:
                             self.active_field = 2
                         else:
                             self.active_field = None
