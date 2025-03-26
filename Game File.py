@@ -407,8 +407,9 @@ class Target:
                 return True
         return False
 
-class Enemy:
+class Enemy(Target):
     def __init__(self, speed=0.02):
+        super().__init__()
         self.choise_target = random.choice(targets)
         self.enemy_x = 0
         self.enemy_y = self.choise_target.target_y
@@ -437,8 +438,9 @@ class Enemy:
     def activate(self):
         self.active = True
 
-class Bonus:
+class Bonus(Target):
     def __init__(self, speed=0.02):
+        super().__init__()
         self.bonus_y = random.randint(30, HEIGHT - 30)
         self.bonus_x = 0
         self.speed = speed
