@@ -252,7 +252,7 @@ class LoginScreen:
             
             if self.message:
                 message_surf = small_font.render(self.message, True, self.message_color)
-                screen.blit(message_surf, (WIDTH//2 - message_surf.get_width()//2, 400))
+                screen.blit(message_surf, (WIDTH//2 - message_surf.get_width()//2, 385))
             
             pygame.display.flip()
             
