@@ -239,7 +239,7 @@ class LoginScreen:
             ]
             for i, (label, value, y) in enumerate(fields):
                 label_surf = small_font.render(label, True, BLACK)
-                screen.blit(label_surf, (WIDTH//2 - 150, y - 25))
+                screen.blit(label_surf, (WIDTH//2 - 150, y - 15))
                 color = BLUE if self.active_field == i else BROWN
                 pygame.draw.rect(screen, color, (WIDTH//2 - 150, y, 300, 35), 2)
                 text_surf = font.render(value, True, BLACK)
